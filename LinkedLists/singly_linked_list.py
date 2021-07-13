@@ -1,180 +1,128 @@
+#creating a single node with data field and next field
+#which contains reference to the next node
 class Node:
     def __init__(self,data):
         self.data = data
         self.next = None
     
-#Creating a linked list
-def CreateNewLinkedList():
-    head = None
-    data = int(input())
-    while data!=0:
-        newNode = Node(data)
-        if head==None:
-            head = newNode
-        else:
-            ptr = head
-            while(ptr.next!=None):
-                ptr = ptr.next 
-            ptr.next = newNode 
-        data = int(input()) 
-    return head
+#Creating a LinkedList class for maintaining everything under name of 
+#linked list
+class LinkedList:
+    def __init__(self):
+        self.head = None 
+    
+    #Creating a linked list
+    def createLinkedList(self,data):
+        if self.head==None:
+            self.head = Node(data) 
 
-#finding length of the linked list
-def length(head):
-    cnt = 0 
-    ptr = head
-    while ptr!=None:
-        cnt += 1 
-        ptr = ptr.next
-    return cnt
-
-
-#adding a node to the linked list
-def addNode(length, head, data):  
-    return insertNode(head,length+1,data)
-
-#adding a node to front of the linked list
-def addFrontNode(head,data):
-    return insertNode(head,1,data)
-
-
-#Inserting a node at a given position
-def insertNode(head, pos, data):
-    newNode = Node(data)
-    ptr = head
-    if pos==1:
-        newNode.next = head
-        head = newNode 
-    else:
-        pos -= 1
-        while pos>1:
+    #finding length of the linked list
+    def length(self):
+        cnt = 0 
+        ptr = self.head
+        while ptr!=None:
+            cnt += 1 
             ptr = ptr.next
-            pos -= 1
-        newNode.next = ptr.next 
-        ptr.next = newNode 
-    return head
-    
-#Deletion
-#Delete the front node
-def deleteFrontNode(head):
-    return deleteNode(head,1)
+        return cnt
 
-#Delete the last node
-def deleteLastNode(head):
-    return deleteNode(head,length(head))
-    
-#Deleting a node at a given position
-def deleteNode(head,position):
-    ptr = head
-    if head != None:
-      if position==1:
-        head = head.next
-      else:
-        position -= 1
-        while position > 1:
-          position -= 1
-          ptr = ptr.next
-        ptr.next = ptr.next.next
-    return head
 
-#displaying a linked lists
-#1-->2-->3-->4-->5-->NULL
-def displayLinkedList(head):
-    print('\nPrinting linked lists')
-    ptr = head
-    while ptr != None:
-        print(ptr.data,'--> ',end='')
-        ptr = ptr.next
-    print('NULL')
-    print()
+    #adding a node to the linked list
+    def append(self,data):  
+        self.insertNode(self.length()+1,data)
 
-#Reversal of linked lists
-def reverseLinkedList(head):
-    ptr = head
-    while ptr != None:
-        if ptr==head:
-            prevNode = head 
-            nextNode = ptr.next 
-            ptr.next = None 
+    #adding a node to front of the linked list
+    def addFrontNode(self,data):
+        self.insertNode(1,data)
+
+
+    #Inserting a node at a given position
+    def insertNode(self, pos, data):
+        newNode = Node(data)
+        ptr = self.head
+        if pos==1:
+            newNode.next = ptr
+            self.head = newNode 
         else:
-            nextNode = ptr.next
-            ptr.next = prevNode
-            prevNode = ptr
-
-        ptr = nextNode
-    head = prevNode 
-    return head
+            pos -= 1
+            while pos>1:
+                ptr = ptr.next
+                pos -= 1
+            newNode.next = ptr.next 
+            ptr.next = newNode
     
-print('1.Create a new linked list')
-print('2.display the linked list')
-print('3.Reverse the linked list')
-print('4.Add node to end of the linked list')
-print('5.Add node to front of the linked list')
-print('6.Delete the front node of the linked list')
-print('7.Delete the last node of the linked list')
-print('8.Delete the node at the given position')
-print('9.Insert node at the given position')
-print('10.Press \'0\' to exit\n')
-try:
-    ch = int(input("Enter your choice : "))
-except ValueError:
-    print('Please enter an interger value!!!')
-    ch=  int(input("Enter your choice : "))
+    #Deletion
+    #Delete the front node
+    def deleteFrontNode(self):
+        self.deleteNode(1)
 
-head = None
-while ch!=0:
-    if ch==1:
-        head = CreateNewLinkedList()
-    elif ch==2:
-        displayLinkedList(head)
-    elif ch==3:
-        head = reverseLinkedList(head)
-    elif ch==4:
-        data = int(input("Enter the data of the last node : "))
-        head = addNode(length(head),head, data)
-    elif ch==5:
-        data = int(input("Enter the data for the front node : "))
-        head = addFrontNode(head,data)
-    elif ch==6:
-        head = deleteFrontNode(head)
-    elif ch==7:
-        head = deleteLastNode(head)
-    elif ch==8:
-        valid = 1
-        no_of_elements = length(head)
-        while valid:
-            pos = int(input("Enter the position of the value : "))
-            if pos>0 and pos<=no_of_elements:
-                valid = 0
+    #Delete the last node
+    def deleteLastNode(self):
+        self.deleteNode(self.length())
+    
+    #Deleting a node at a given position
+    def deleteNode(self,position):
+        ptr = self.head
+        if ptr != None:
+            if position==1:
+                self.head = ptr.next
             else:
-                print("Please enter the valid position!!!")
-        head = deleteNode(head,pos)
-    elif ch==9:
-        valid = 1
-        no_of_elements = length(head)
-        while valid:
-            pos = int(input("Enter the position of the value : "))
-            if pos>0 and pos<=no_of_elements+1:
-                valid = 0
+                position -= 1
+                while position > 1:
+                    position -= 1
+                ptr = ptr.next
+                ptr.next = ptr.next.next
+        else:
+            print('Linked list is empty!!!')
+
+    #displaying a linked lists
+    #1-->2-->3-->4-->5-->NULL
+    def displayLinkedList(self):
+        #print('\nPrinting linked lists')
+        ptr = self.head
+        while ptr != None:
+            print(ptr.data,'--> ',end='')
+            ptr = ptr.next
+        print('NULL')
+
+    #Reversal of linked lists
+    def reverseLinkedList(self):
+        ptr = self.head
+        while ptr != None:
+            if ptr==self.head:
+                prevNode = ptr 
+                nextNode = ptr.next 
+                ptr.next = None 
             else:
-                print("Please enter the valid position!!!")
-        data = int(input("Enter the data : "))
-        head = insertNode(head,pos,data)
-    else:
-        print("Please enter a valid choice")
-    print()
-    print('1.Create a new linked list')
-    print('2.display the linked list')
-    print('3.Reverse the linked list')
-    print('4.Add node to end of the linked list')
-    print('5.Add node to front of the linked list')
-    print('6.Delete the front node of the linked list')
-    print('7.Delete the last node of the linked list')
-    print('8.Delete the node at the given position')
-    print('9.Insert node at the given position')
-    print('10.Press \'0\' to exit\n')
-    try:
-        ch = int(input("Enter your choice : "))
-    except ValueError:
-        print('Please enter an interger value!!!')
-        ch=  int(input("Enter your choice : "))
+                nextNode = ptr.next
+                ptr.next = prevNode
+                prevNode = ptr
+
+            ptr = nextNode
+        self.head = prevNode 
+    
+llist1 = LinkedList() #Linked List 1
+llist2 = LinkedList() #Linked List 2
+
+llist1.createLinkedList(10)
+llist1.append(20)
+llist1.append(30)
+#printing Linked list 1
+print('Original Linked List')
+llist1.displayLinkedList()
+#reversing Linked List 1
+llist1.reverseLinkedList()
+print('Reversed Linked list 1')
+llist1.displayLinkedList()
+print()
+
+llist2.createLinkedList(50)
+llist2.append(60)
+llist1.append(70)
+#printing Linked list 2
+print('Original Linked List')
+llist2.displayLinkedList()
+#reversing Linked List 2
+llist2.reverseLinkedList()
+print('Reversed Linked list 2')
+llist2.displayLinkedList()
+print()
